@@ -1,5 +1,11 @@
-const hello = () => {
-  console.log("Hello github!");
-};
+const http = require("http");
+const fs = require("fs");
 
-hello();
+const server = http.createServer((req,res)=> {
+  const server = fs.createReadStream("sample.txt");
+  Stream.pipe();
+  // fs.readFile("sample.txt",(err,data) =>{
+  //        res.end(data);
+  // })
+});
+server.listen(3000);
