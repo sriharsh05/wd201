@@ -38,7 +38,8 @@ http
         break;
       case "/registration":
         response.write(registrationContent);
-        response.end();  
+        response.end();
+        break;  
       default:
         response.write(homeContent);
         response.end();
