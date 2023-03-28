@@ -8,10 +8,10 @@ const todoList = () => {
     }
   
     const overdue = () => {
-        const overdueTasks = [];
+        let overdueTasks = [];
         let taskStatus = '[ ]';
         
-        for (let task of allTasks) {
+        for (let task of all) {
           if (task.dueDate === yesterday) {
             if (task.completed === true) {
               taskStatus = '[x]';
@@ -28,7 +28,7 @@ const todoList = () => {
         const tasksDueToday = [];
         let taskStatus = '[ ]';
         
-        for (let task of allTasks) {
+        for (let task of all) {
           if (task.dueDate === today) {
             if (task.completed === true) {
               taskStatus = '[x]';
@@ -45,7 +45,7 @@ const todoList = () => {
         const tasksDueLater = [];
         let taskStatus = '[ ]';
         
-        for (let task of allTasks) {
+        for (let task of all) {
           if (task.dueDate === tomorrow) {
             if (task.completed === true) {
               taskStatus = '[x]';
