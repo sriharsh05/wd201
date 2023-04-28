@@ -9,22 +9,22 @@ app.use(bodyParser.json());
 app.set("view engine", "ejs");
 // app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", function (request, response) {
-  response.render('index');
-});
-
-// app.get("/", async (request, response) => {
-//   const allTodos = await Todo.getTodos();
-//   if (request.accepts("html")) {
-//     response.render("index", {
-//       allTodos,
-//     });
-//   } else {
-//     response.json({
-//       allTodos,
-//     });
-//   }
+// app.get("/", function (request, response) {
+//   response.render('index');
 // });
+
+app.get("/", async (request, response) => {
+  const allTodos = await Todo.getTodos();
+  if (request.accepts("html")) {
+    response.render("index", {
+      allTodos,
+    });
+  } else {
+    response.json({
+      allTodos,
+    });
+  }
+});
 
 app.get("/todos", async function (_request, response) {
   console.log("Processing list of all Todos ...");
