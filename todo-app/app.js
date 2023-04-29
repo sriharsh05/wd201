@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 
 //set ejs as view engine
 app.set("view engine", "ejs");
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // app.get("/", function (request, response) {
 //   response.render('index');
@@ -102,7 +102,6 @@ app.delete("/todos/:id", async function (request, response) {
 app.get("/todos", async (request, response) => {
   const todoItem = await Todo.gettodo();
   response.json(todoItem);
-
 });
 
 module.exports = app;
