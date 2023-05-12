@@ -6,6 +6,33 @@
     <title>Todo App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/styles.css" />
+    <script>
+    function updateTodo(id) {
+        fetch(`/todos/${id}/markAsCompleted`,{
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+            if(res.ok){
+                window.location.reload();
+            }
+        })
+        .catch((err) => console.error(err));
+    }
+
+    function deleteTodo(id) {
+                fetch(`/todos/${id}`, {
+                    method: "delete",
+                    headers: { "Content-Type": "application/json" },
+                })
+                .then((res)=> {
+                    if(res.ok) {
+                        window.location.reload();
+                    }
+                })
+                .catch((err) => console.error(err));
+                }
+</script>
   </head>
   <body>
     <div class="grid grid-cols-6">
@@ -27,8 +54,6 @@
         <%- include('todos') %>
         <%- include('footer') %>
       </div>
-      <!-- <div class="col-start-3 col-span-2"><%- include('todos') %></div>
-      <div class="col-start-3 col-span-2"><%- include('footer') %></div> -->
     </div>
   </body>
 </html>

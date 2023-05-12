@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require("express");
 const app = express();
 const { Todo } = require("./models");
@@ -9,10 +10,6 @@ app.use(express.urlencoded({ extended: false }));
 //set ejs as view engine
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
-
-// app.get("/", function (request, response) {
-//   response.render('index');
-// });
 
 app.get("/", async (request, response) => {
   const overdue = await Todo.overdue();
@@ -32,8 +29,7 @@ app.get("/todos", async function (_request, response) {
   try {
     const todos = await Todo.findAll();
     return response.send(todos);
-  } 
-  catch (error) {
+  } catch (error) {
     console.log(error);
     return response.status(422).json(error);
   }
@@ -71,27 +67,12 @@ app.put("/todos/:id/markAsCompleted", async function (request, response) {
 });
 
 app.delete("/todos/:id", async function (request, response) {
-  console.log("We have to delete a Todo with ID: ", request.params.id);
-  // FILL IN YOUR CODE HERE
-
-  // First, we have to query our database to delete a Todo by ID.
-  // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
-  // response.send(true)
-  
+  console.log("Deleting a Todo with ID: ", request.params.id);
   try {
-    await Todo.destroy({
-      where: {
-        id: request.params.id,
-      },
-    }).then((vr) => {
-      if (!vr) {
-        return response.status(404).send(false);
-      } else {
-        response.status(404).send(true);
-      }
-    });
+    await Todo.remove(request.params.id);
+    return response.json({ success: true });
   } catch (error) {
-    response.status(422).json(error);
+    return response.status(422).json(error);
   }
 });
 
