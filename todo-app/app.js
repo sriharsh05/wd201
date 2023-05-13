@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
 const express = require("express");
 const app = express();
+var csrf = require("tiny-csrf");
+var cookieParser = require("cookie-parser");
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 const path = require("path");
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser("ssh! some secret string"));
+app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
+
 
 //set ejs as view engine
 app.set("view engine", "ejs");
@@ -16,7 +21,7 @@ app.get("/", async (request, response) => {
   const dueToday = await Todo.dueToday();
   const dueLater = await Todo.dueLater();
   if (request.accepts("html")) {
-    response.render("index", { overdue, dueToday, dueLater });
+    response.render("index", { overdue, dueToday, dueLater,csrfToken: request.csrfToken()});
   } else {
     response.json({ overdue, dueToday, dueLater });
   }
