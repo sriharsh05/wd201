@@ -16,10 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       return this.create({ title: title, dueDate: dueDate, completed: false });
     }
 
-    markAsCompleted() {
-      return this.update({ completed: true });
-    }
-
+  
     static getTodos() {
       return this.findAll();
     }
@@ -68,6 +65,20 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+
+    setCompletionStatus(updatevalue) {
+      return this.update({ completed: updatevalue });
+    }
+
+    static completedItems() {
+      const compitems = this.findAll({
+        where: {
+          completed: true,
+        },
+      });
+      return compitems;
+    }
+
   }
   Todo.init(
     {
