@@ -11,23 +11,26 @@
     var token=document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content");    
-    function updateTodo(id) {
-        const Checked = document.querySelector(`#todo-checkbox-${id}`).checked;
-        fetch(`/todos/${id}`,{
-            method: "put",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                        completed: Checked,
-                        "_csrf":token,
-                    })
+
+   function updateTodo(id) {
+        const isChecked = document.querySelector(
+          `#todo-checkbox-${id}`
+        ).checked;
+        fetch(`/todos/${id}`, {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            _csrf: token,
+            completed: isChecked,
+          }),
         })
-        .then((res) => {
-            if(res.ok){
-                window.location.reload();
+          .then((res) => {
+            if (res.ok) {
+              window.location.reload();
             }
-        })
-        .catch((err) => console.error(err));
-    }
+          })
+          .catch((err) => console.error(err));
+      }
 
     function deleteTodo(id) {
                 fetch(`/todos/${id}`, {
@@ -54,18 +57,32 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <div class="flex gap-2 py-4">
                 <div class="flex-auto">
-                    <input type="text" name="title" placeholder="What's next?" class="border border-black-300 rounded text-black-900 w-full p-2 text-sm" required />
+                    <input type="text" 
+                        name="title" 
+                        placeholder="What's next?" 
+                        class="border border-black-300 rounded text-black-900 w-full p-2 text-sm" 
+                        required />
                 </div>
                 <div class="flex-auto">
-                    <input type="date"name="dueDate" class="border border-black-300 rounded text-black-900 w-full p-2 text-sm leading-4" required/>
+                    <input type="date"
+                       name="dueDate" 
+                       class="border border-black-300 rounded text-black-900 w-full p-2 text-sm leading-4" 
+                       required/>
                 </div>
                 <div class="flex-none">
-                    <button type="submit" class="bg-green-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">Add</button>
+                    <button type="submit" 
+                        class="bg-green-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">
+                            Add
+                    </button>
                 </div>
             </div>
         </form>
-        <%- include('todos') %>
-        <%- include('footer') %>
+        <div class="col-start-3 col-span-3">
+            <%- include('todos.ejs', {title: "Overdue", data: overdue}) %>
+            <%- include('todos.ejs', {title: "Due Today", data: dueToday}) %>
+            <%- include('todos.ejs', {title: "Due Later", data: dueLater}) %>
+            <%- include('todos.ejs', {title: "Completed Items", data: completedItems}) %>
+          </div>
       </div>
     </div>
   </body>
