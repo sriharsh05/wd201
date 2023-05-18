@@ -114,7 +114,7 @@ app.get(
   }
 );
 
-app.get("/signup", async function (request, response) {
+app.get("/signup", async (request, response) => {
   response.render("signup", {
     title: "Signup",
     csrfToken: request.csrfToken(),
@@ -177,7 +177,7 @@ app.get("/signout", (request, response, next) => {
   });
 });
 
-app.get("/todos", async function (_request, response) {
+app.get("/todos", async (_request, response) => {
   console.log("Processing list of all Todos ...");
   // FILL IN YOUR CODE HERE
 
@@ -190,7 +190,7 @@ app.get("/todos", async function (_request, response) {
   }
 });
 
-app.get("/todos/:id", async function (request, response) {
+app.get("/todos/:id", async (request, response) => {
   try {
     const todo = await Todo.findByPk(request.params.id);
     return response.json(todo);
@@ -203,7 +203,7 @@ app.get("/todos/:id", async function (request, response) {
 app.post(
   "/todos",
   connectEnsureLogin.ensureLoggedIn(),
-  async function (request, response) {
+  async (request, response) => {
     if (request.body.title.length == 0) {
       request.flash("error", "Please, Fill the title!");
       return response.redirect("/todo");
@@ -233,7 +233,7 @@ app.post(
 app.put(
   "/todos/:id",
   connectEnsureLogin.ensureLoggedIn(),
-  async function (request, response) {
+  async (request, response) => {
     const todo = await Todo.findByPk(request.params.id);
     try {
       const updatedTodo = await todo.setCompletionStatus(
@@ -250,7 +250,7 @@ app.put(
 app.delete(
   "/todos/:id",
   connectEnsureLogin.ensureLoggedIn(),
-  async function (request, response) {
+  async (request, response) => {
     console.log("Deleting a Todo with ID: ", request.params.id);
     try {
       await Todo.remove(request.params.id, request.user.id);
