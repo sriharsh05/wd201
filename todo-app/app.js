@@ -96,6 +96,7 @@ app.get(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     const loggedInUser = request.user.id;
+    const UserName = request.user.firstName;
     const overdue = await Todo.overdue(loggedInUser);
     const dueToday = await Todo.dueToday(loggedInUser);
     const dueLater = await Todo.dueLater(loggedInUser);
@@ -106,10 +107,11 @@ app.get(
         dueToday,
         dueLater,
         completedItems,
+        UserName,
         csrfToken: request.csrfToken(),
       });
     } else {
-      response.json({ overdue, dueToday, dueLater, completedItems });
+      response.json({ overdue, dueToday, dueLater, completedItems, UserName });
     }
   }
 );
@@ -130,6 +132,10 @@ app.post("/users", async (request, response) => {
     request.flash("error", "Please, Fill the E-Mail!");
     return response.redirect("/signup");
   }
+  if (request.body.password.length == 0) {
+    request.flash("error", "Please, Fill the Password!");
+    return response.redirect("/signup");
+  }
   //Hash password using bcrypt
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   console.log(hashedPwd);
@@ -144,11 +150,16 @@ app.post("/users", async (request, response) => {
     request.login(user, (err) => {
       if (err) {
         console.log(err);
+        res.redirect("/todo");
+      } else {
+        request.flash("success", "Sign up successful");
+        response.redirect("/todo");
       }
-      response.redirect("/todo");
     });
   } catch (error) {
     console.log(error);
+    request.flash("error", "User already Exists");
+    return response.redirect("/signup");
   }
 });
 
