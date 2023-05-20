@@ -201,10 +201,10 @@ describe("Todo Application", function () {
     csrfToken = extractCsrfToken(res2);
 
     await agent.post("/users").send({
-      firstName: "userA",
+      firstName: "userB",
       lastName: "test",
-      email: "userA@gmail.com",
-      password: "12345678",
+      email: "userB@gmail.com",
+      password: "87654321",
       _csrf: csrfToken,
     });
 
